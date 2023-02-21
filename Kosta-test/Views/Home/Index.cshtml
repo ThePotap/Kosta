@@ -1,0 +1,17 @@
+﻿@using Kosta_test.App_Code
+@model IEnumerable<Kosta_test.Models.Department>
+@{
+    Layout = "_Layout";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>КОСТА</title>    
+</head>
+<body>
+    <h1>Company structure</h1>        
+    <div class="structure">
+        @Html.CreateTree(Model)
+    </div>
+</body>
+</html>
