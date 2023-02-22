@@ -8,35 +8,36 @@
 		<title>КОСТА</title>
 	</head>
 	<body>
-		<h1>Сотрудники отдела: @ViewData["Department"]</h1>
-		<input type="hidden" name="depID" value="@ViewData["DepartmentID"]"/>
-		<table>
-			<tr>
-				<th>Фамилия</th>
-				<th>Имя</th>
-				<th>Отчетство</th>
-				<th>Должность</th>
-			</tr>
-		@foreach(var employee in Model)
-		{
-			<tr>
-				<th>@employee.SurName</th>
-				<th>@employee.FirstName</th>
-				<th>@employee.Patronymic</th>
-				<th>@employee.Position</th>
-				<th>
-					<form method="post">
+		<form method="post">
+			<h1>Сотрудники отдела: @ViewData["Department"]</h1>
+			<input type="hidden" name="depID" value="@ViewData["DepartmentID"]"/>
+			<table>
+				<tr>
+					<th>Фамилия</th>
+					<th>Имя</th>
+					<th>Отчетство</th>
+					<th>Должность</th>
+				</tr>
+			@foreach(var employee in Model)
+			{
+				<tr>
+					<th>@employee.SurName</th>
+					<th>@employee.FirstName</th>
+					<th>@employee.Patronymic</th>
+					<th>@employee.Position</th>
+					<th>
 						<input type="hidden" name="empID" value="@employee.ID" />
 						<input type="submit" value="Details" formaction="/Home/DetailsEmployee" />
 						<input type="submit" value="Delete" formaction="/Home/DeleteEmployee" />
-					</form>
-				</th>
-			</tr>
-		}
-		</table>
+					</th>
+				</tr>
+			}
+			</table>
+		
+			<input type="submit" value="Add employee" formaction="/Home/CreateEmployee">			
+		</form>
 		<form method="get">
-			<input type="submit" value="Add employee" formaction="/Home/CreateEmployee">
-			<input type="submit" value="Back" formaction="/Home/Index"/>
+			<input type="submit" value="Back" formaction="/Home/Index" />
 		</form>
 </body>
 </html>

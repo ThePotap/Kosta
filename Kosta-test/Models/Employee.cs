@@ -1,8 +1,11 @@
-﻿namespace Kosta_test.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Kosta_test.Models
 {
     public class Employee
     {
-        public decimal ID { get; set; }
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		public decimal ID { get; set; }
         public Guid DepartmentID { get; set; }
         public string SurName { get; set; }
         public string FirstName { get; set; }

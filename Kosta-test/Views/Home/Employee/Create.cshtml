@@ -1,43 +1,63 @@
-﻿@{
+﻿@model Kosta_test.ViewModels.EmployeeCardModel
+@{
 	Layout = "_Layout";
+}
+@section Scripts{
+	<script src="~/js/site.js"></script>
 }
 <!DOCTYPE html>
 <html>
 	<head>
 		<title>Create employee</title>
 	</head>
-	<body>
-		<label>Отдел</label>
-		<br>
-		<select>
-			<option value="dep1">dep1</option>
-			<option value="dep2">dep2</option>
-		</select>
-		<br>
-		<label>Фамилия</label>
-		<br>
-		<input type="text" name="SurName"/>
-		<br>
-		<label>Имя</label>
-		<br>
-		<input type="text" name="FirstName"/>
-		<br>
-		<label>Отчество</label>
-		<br>
-		<input type="text" name="Patronymic" />
-		<br>
-		<label>Дата рождения</label>
-		<br>
-		<input type="date"/>
-		<br>
-		<label>Возраст</label>
-		<br>
-		<label>Серия документа</label>
-		<br>
-		<input type="text"/>
-		<br>
-		<label>Номер документа</label>
-		<br>
-		<input type="text"/>
+	<body onload="SetInitialInfo()">
+		<form method="post" name="form">
+			<label>Отдел</label>
+			<input type="hidden" name="depID" value="@ViewData["DepartmentID"]"/>
+			<br>
+			<select id="departmentList" onchange="ChangeDepartment(this)">
+			@foreach(var dep in Model.Departments)
+			{
+				<option value="@dep.ID">@dep.Name</option>
+			}
+			</select>
+			<input id="selectedDep" type="hidden" name="selectedDepID" value="@ViewData["DepartmentID"]" />			
+			<br>
+			<label>Фамилия</label>
+			<br>
+			<input type="text" name="SurName" value="@Model.Employee.SurName"/>
+			<br>
+			<label>Имя</label>
+			<br>
+			<input type="text" name="FirstName" value="@Model.Employee.FirstName"/>
+			<br>
+			<label>Отчество</label>
+			<br>
+			<input type="text" name="Patronymic" value="@Model.Employee.Patronymic"/>
+			<br>
+			<label>Дата рождения</label>
+			<br>
+			<input id="dateOfBirth" type="date" name="DateOfBirth" value="@Model.Employee.DateOfBirth" onchange="ChangeAge()" />
+			<br>
+			<label>Возраст</label>
+			<br>
+			<label id="EmployeeAge" value=""></label>
+			<br>
+			<label>Серия документа</label>
+			<br>
+			<input type="text" name="DocSeries" value="@Model.Employee.DocSeries"/>
+			<br>
+			<label>Номер документа</label>
+			<br>
+			<input type="text" name="DocNumber" value="@Model.Employee.DocNumber"/>
+			<br>
+			<label>Должность</label>
+			<br>
+			<input type="text" name="Position" value="@Model.Employee.Position"/>
+			<br>
+			<br>
+			<input type="submit" name="action" value="Save" onclick="return Validate()" formaction="/Home/SaveNewEmployee" />
+			<input type="submit" name="action" value="Back" formaction="/Home/ShowEmployees" />
+		</form>
 	</body>
 </html>
