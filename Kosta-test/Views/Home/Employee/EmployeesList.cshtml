@@ -21,21 +21,22 @@
 			@foreach(var employee in Model)
 			{
 				<tr>
-					<th>@employee.SurName</th>
-					<th>@employee.FirstName</th>
-					<th>@employee.Patronymic</th>
-					<th>@employee.Position</th>
-					<th>
+					<td>@employee.SurName</td>
+					<td>@employee.FirstName</td>
+					<td>@employee.Patronymic</td>
+					<td>@employee.Position</td>
+					<td>
 						<input type="hidden" name="empID" value="@employee.ID" />
-						<input type="submit" value="Details" formaction="/Home/DetailsEmployee" />
+						<input type="submit" value="Details" formaction="/Home/ReadEmployee" />
 						<input type="submit" value="Delete" formaction="/Home/DeleteEmployee" />
-					</th>
+					</td>
 				</tr>
 			}
 			</table>
-		
+			<br>
 			<input type="submit" value="Add employee" formaction="/Home/CreateEmployee">			
 		</form>
+		
 		<form method="get">
 			<input type="submit" value="Back" formaction="/Home/Index" />
 		</form>

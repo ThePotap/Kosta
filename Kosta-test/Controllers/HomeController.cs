@@ -50,7 +50,45 @@ namespace Kosta_test.Controllers
             return View("Employee/Create", employeeCardModel);
         }
 
-        public IActionResult SaveNewEmployee(string selectedDepID, Employee employee)
+        public IActionResult ReadEmployee(string depID, string empID)
+        {
+            if (!DepartmentIDCorrect(depID) || !EmployeeIDCorrect(empID))
+            {
+                return BadRequest("Incorrect request");
+            }
+			var departmentID = Guid.Parse(depID);
+			var department = db.Department.Where(item => item.ID == departmentID).FirstOrDefault();
+
+			ViewData["DepartmentID"] = department.ID;
+            ViewData["DepartmentName"] = department.Name;
+
+            var employeeID = decimal.Parse(empID);
+            var employee = db.Employee.Where(item => item.ID == employeeID).FirstOrDefault();
+			
+			return View("Employee/Read", employee);
+		}
+
+        public IActionResult UpdateEmployee(string depID, string empID)
+        {
+			if (!DepartmentIDCorrect(depID) || !EmployeeIDCorrect(empID))
+			{
+				return BadRequest("Incorrect request");
+			}
+
+			ViewData["DepartmentID"] = depID;
+			var departments = db.Department.ToList();
+			var employeeID = decimal.Parse(empID);
+			var employee = db.Employee.Where(item => item.ID == employeeID).FirstOrDefault();
+			var employeeCardModel = new EmployeeCardModel
+			{
+				Departments = departments,
+				Employee = employee
+			};
+			return View("Employee/Update", employeeCardModel);
+		}
+
+
+		public IActionResult SaveNewEmployee(string selectedDepID, Employee employee)
         {
             if (!DepartmentIDCorrect(selectedDepID))
             {

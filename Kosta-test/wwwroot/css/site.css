@@ -5,3 +5,12 @@
 .structure button{
     font-size: 12px;
 }
+
+table, tr, td {
+    font-size: 20px;
+    border: 1px solid black;
+}
+
+.employee-card input, label, select{
+    font-size: 20px;
+}

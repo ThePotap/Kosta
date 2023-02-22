@@ -1,0 +1,66 @@
+﻿@model Kosta_test.Models.Employee
+@{
+	Layout = "_Layout";
+}
+@section Scripts{
+	<script src="~/js/site.js"></script>
+}
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Details</title>
+	</head>
+	<body onload="ChangeAge()">
+		<form method="post" name="form">
+			<input type="hidden" name="depID" value="@ViewData["DepartmentID"]"/>
+			<input type="hidden" name="empID" value="@Model.ID"/>
+			<div class="employee-card">
+				<table>
+					<tr>
+						<td>
+							<label>Отдел</label>							
+						</td>
+						<td>
+							<label>@ViewData["DepartmentName"]</label>
+						</td>
+					</tr>
+					<tr>
+						<td><label>Фамилия</label></td>
+						<td><input type="text" name="SurName" value="@Model.SurName" readonly/></td>
+					</tr>
+					<tr>
+						<td><label>Имя</label></td>
+						<td><input type="text" name="FirstName" value="@Model.FirstName" readonly/></td>
+					</tr>
+					<tr>
+						<td><label>Отчество</label></td>
+						<td><input type="text" name="Patronymic" value="@Model.Patronymic" readonly/></td>
+					</tr>
+					<tr>
+						<td><label>Дата рождения</label></td>
+					<td><input id="dateOfBirth" type="text" name="DateOfBirth" value="@Model.DateOfBirth.ToShortDateString()" readonly/></td>
+					</tr>
+					<tr>
+						<td><label>Возраст</label></td>
+						<td><label id="EmployeeAge"></label></td>
+					</tr>
+					<tr>
+						<td><label>Серия документа</label></td>
+					<td><input type="text" name="DocSeries" value="@Model.DocSeries" readonly/></td>
+					</tr>
+					<tr>
+						<td><label>Номер документа</label></td>
+					<td><input type="text" name="DocNumber" value="@Model.DocNumber" readonly/></td>
+					</tr>
+					<tr>
+						<td><label>Должность</label></td>
+					<td><input type="text" name="Position" value="@Model.Position" readonly/></td>
+					</tr>
+				</table>			
+				<br>
+				<input type="submit" name="action" value="Edit" formaction="/Home/UpdateEmployee" />
+				<input type="submit" name="action" value="Back" formaction="/Home/ShowEmployees" />
+			</div>
+		</form>
+	</body>
+</html>
