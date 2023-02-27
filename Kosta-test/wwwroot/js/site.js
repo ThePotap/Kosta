@@ -1,6 +1,4 @@
-﻿
-
-//заполнение первоначальных данных подразделения
+﻿//заполнение первоначальных данных подразделения
 function SetInitialInfoDepartmentCard() {
     //выбор из списка отделов того к которому относится подразделение
     let parentDepartment = document.getElementById("selectedDep");
@@ -28,15 +26,21 @@ function SetInitialInfoEmployeeCard() {
     ChangeAge();
 }
 
-function ChangeAge() {
-    //JS не работает с датами разделенных ".", поэтому их необходимо преобразовать
-    let dateOfBirth = document.getElementById("dateOfBirth").value;
-    //let dateParts = dateOfBirth.split(".");
-    //dateOfBirth = new Date(dateParts[2], (dateParts[1] - 1), dateParts[0]);
+function ChangeAge() {    
+    let dateOfBirth = GetValidDate(document.getElementById("dateOfBirth").value);    
     let ageInMs = new Date() - new Date(dateOfBirth);
     let ageDate = new Date(ageInMs);
     let age = Math.abs(ageDate.getUTCFullYear() - 1970);
     document.getElementById("EmployeeAge").innerHTML = isNaN(age) ? "0" : String(age);
+}
+
+function GetValidDate(date) {
+    //JS не работает с датами разделенных ".", поэтому их необходимо преобразовать
+    if (date.indexOf(".") > -1) {
+        let dateParts = date.split(".");
+        date = new Date(dateParts[2], (dateParts[1] - 1), dateParts[0]);
+    }
+    return date;
 }
 
 //Проверка заполненности обязательных полей
