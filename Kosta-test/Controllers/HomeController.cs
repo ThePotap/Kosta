@@ -36,7 +36,8 @@ namespace Kosta_test.Controllers
             ViewData["DepartmentID"] = department.ID.ToString();
             return View("Employee/EmployeesList", employees);
         }
-        
+
+        [HttpPost]
         public IActionResult CreateEmployee(string depID)
         {
             ViewData["DepartmentID"] = depID;
@@ -50,6 +51,7 @@ namespace Kosta_test.Controllers
             return View("Employee/Create", employeeCardModel);
         }
 
+        [HttpPost]
         public IActionResult ReadEmployee(string depID, string empID)
         {
             if (!DepartmentIDCorrect(depID) || !EmployeeIDCorrect(empID))
@@ -68,6 +70,7 @@ namespace Kosta_test.Controllers
 			return View("Employee/Read", employee);
 		}
 
+        [HttpPost]
         public IActionResult UpdateEmployee(string depID, string empID)
         {
 			if (!DepartmentIDCorrect(depID) || !EmployeeIDCorrect(empID))
@@ -87,7 +90,33 @@ namespace Kosta_test.Controllers
 			return View("Employee/Update", employeeCardModel);
 		}
 
+        [HttpPost]
+        public IActionResult DeleteEmployee(string depID, string empID)
+        {
+			if (!EmployeeIDCorrect(empID))
+			{
+				return BadRequest("Incorrect request");
+			}
 
+			var employeeID = decimal.Parse(empID);
+            var employee = db.Employee.Where(item => item.ID == employeeID).FirstOrDefault();
+            if(employee != null)
+            {
+				db.Employee.Remove(employee);
+				db.SaveChanges();
+			}            
+
+			if (DepartmentIDCorrect(depID))
+            {
+				return ShowEmployees(depID);
+			}
+            else
+            {
+                return Index();
+            }
+        }
+
+        [HttpPost]
 		public IActionResult SaveNewEmployee(string selectedDepID, Employee employee)
         {
             if (!DepartmentIDCorrect(selectedDepID))
@@ -102,7 +131,33 @@ namespace Kosta_test.Controllers
 			return ShowEmployees(selectedDepID);
 		}
 
-        private bool DepartmentIDCorrect(string depID)
+        [HttpPost]
+		public IActionResult SaveExistEmployee(string selectedDepID, Employee employee)
+        {
+			if (!DepartmentIDCorrect(selectedDepID) || !EmployeeIDCorrect(employee.ID.ToString()))
+			{
+				return BadRequest("Incorrect request");
+			}
+
+			employee.DepartmentID = Guid.Parse(selectedDepID);
+            var emp = db.Employee.Where(item => item.ID == employee.ID).FirstOrDefault();
+            
+            emp.SurName = employee.SurName;
+            emp.FirstName = employee.FirstName;
+            emp.Patronymic = employee.Patronymic;
+            emp.DateOfBirth = employee.DateOfBirth;
+            emp.DocSeries = employee.DocSeries;
+            emp.DocNumber = employee.DocNumber;
+            emp.Position = employee.Position;
+            emp.DepartmentID = employee.DepartmentID;
+			
+            db.Employee.Update(emp);
+			db.SaveChanges();
+
+			return ShowEmployees(selectedDepID);
+		}
+    
+		private bool DepartmentIDCorrect(string depID)
         {
 			if (string.IsNullOrEmpty(depID))
 			{

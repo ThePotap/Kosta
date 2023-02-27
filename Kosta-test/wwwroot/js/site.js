@@ -13,20 +13,19 @@ function SetInitialInfo() {
     ChangeAge();
 }
 
-function ChangeAge() {    
+function ChangeAge() {
+    //JS не работает с датами разделенных ".", поэтому их необходимо преобразовать
     let dateOfBirth = document.getElementById("dateOfBirth").value;
-    let curDate = new Date();
-    let ageInMs = curDate - new Date(dateOfBirth);
-    //переводим возраст из мс в годы и оставляем только целую часть
-    let age = Math.trunc(ageInMs / 1000 / 60 / 60 / 24 / 365);
+    //let dateParts = dateOfBirth.split(".");
+    //dateOfBirth = new Date(dateParts[2], (dateParts[1] - 1), dateParts[0]);
+    let ageInMs = new Date() - new Date(dateOfBirth);
+    let ageDate = new Date(ageInMs);
+    let age = Math.abs(ageDate.getUTCFullYear() - 1970);
     document.getElementById("EmployeeAge").innerHTML = isNaN(age) ? "0" : String(age);
 }
 
-function ChangeDepartment(element) {
-    document.getElementById("selectedDep").value = element.value;
-}
-
-function Validate() {
+//Проверка заполненности обязательных полей
+function ValidateEmployee() {
     let surName = document.form.SurName.value;
     if (surName === "") {
         alert("Поле \"Фамилия\" обязательно для заполнения!");
@@ -92,4 +91,23 @@ function Validate() {
     }
 
     return true;
+}
+
+
+function ConfirmDeleting(employeeID) {
+    if (!confirm("Вы действительно хотите удалить сотрудника?")) {
+        return false;
+    }
+    ChangeSelectedEmployee(employeeID);
+    return true;
+}
+
+
+function ChangeSelectedEmployee(employeeID) {
+    document.getElementById("selectedEmp").value = employeeID;
+}
+
+
+function ChangeSelectedDepartment(element) {
+    document.getElementById("selectedDep").value = element.value;
 }

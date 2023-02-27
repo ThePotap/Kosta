@@ -6,7 +6,8 @@ namespace Kosta_test.App_Code
 {
     public static class TreeHelper
     {
-        public static HtmlString CreateTree(this IHtmlHelper html, IEnumerable<Department> departments)
+		//Формирование html-кода структуры предприятия в виде дерева
+		public static HtmlString CreateTree(this IHtmlHelper html, IEnumerable<Department> departments)
         {
             var treeDepartments = departments.Select(
                 i => new TreeViewNode { ID = i.ID.ToString(), Parent = i.ParentDepartmentID.ToString(), Name = i.Name }
@@ -31,11 +32,13 @@ namespace Kosta_test.App_Code
             return new HtmlString(result);
         }
 
+
+        //Вспомогательная рекурсивная функция для формирования вложенности
         private static string GetStructure(TreeViewNode node)
         {
             var result = $"<li>{node.Name} </li>" +
                 $"<form method=\"post\">" +
-                    $"<input type=\"submit\" value=\"Employees\" formaction=\"/Home/ShowEmployees\"/>" +
+                    $"<input type=\"submit\" value=\"Сотрудники\" formaction=\"/Home/ShowEmployees\"/>" +
                     $"<input type=\"hidden\" name=\"depID\" value=\"{node.ID}\"/>" +
                 $"</form>" +
                 $"<br>";

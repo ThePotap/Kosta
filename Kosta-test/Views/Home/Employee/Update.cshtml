@@ -1,0 +1,72 @@
+﻿@model Kosta_test.ViewModels.EmployeeCardModel
+@{
+	Layout = "_Layout";
+}
+@section Scripts{
+	<script src="~/js/site.js"></script>
+}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Create employee</title>
+</head>
+<body onload="SetInitialInfo()">
+	<form method="post" name="form">
+		<input type="hidden" name="depID" value="@ViewData["DepartmentID"]" />
+		<input type="hidden" name="ID" value="@Model.Employee.ID" />
+		<input id="selectedDep" type="hidden" name="selectedDepID" value="@ViewData["DepartmentID"]" />
+		<div class="employee-card">
+			<table>
+				<tr>
+					<td>
+						<label>Отдел</label>						
+					</td>
+					<td>
+						<select id="departmentList" onchange="ChangeSelectedDepartment(this)">
+							@foreach (var dep in Model.Departments)
+							{
+								<option value="@dep.ID">@dep.Name</option>
+							}
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td><label>Фамилия</label></td>
+					<td><input type="text" name="SurName" value="@Model.Employee.SurName" /></td>
+				</tr>
+				<tr>
+					<td><label>Имя</label></td>
+					<td><input type="text" name="FirstName" value="@Model.Employee.FirstName" /></td>
+				</tr>
+				<tr>
+					<td><label>Отчество</label></td>
+					<td><input type="text" name="Patronymic" value="@Model.Employee.Patronymic" /></td>
+				</tr>
+				<tr>
+					<td><label>Дата рождения</label></td>
+					<td><input id="dateOfBirth" type="date" name="DateOfBirth" value="@Model.Employee.DateOfBirth" onchange="ChangeAge()" /></td>
+				</tr>
+				<tr>
+					<td><label>Возраст</label></td>
+					<td><label id="EmployeeAge"></label></td>
+				</tr>
+				<tr>
+					<td><label>Серия документа</label></td>
+					<td><input type="text" name="DocSeries" value="@Model.Employee.DocSeries" /></td>
+				</tr>
+				<tr>
+					<td><label>Номер документа</label></td>
+					<td><input type="text" name="DocNumber" value="@Model.Employee.DocNumber" /></td>
+				</tr>
+				<tr>
+					<td><label>Должность</label></td>
+					<td><input type="text" name="Position" value="@Model.Employee.Position" /></td>
+				</tr>
+			</table>
+			<br>
+			<input type="submit" name="action" value="Сохранить" onclick="return ValidateEmployee()" formaction="/Home/SaveExistEmployee" />
+			<input type="submit" name="action" value="Назад" formaction="/Home/ShowEmployees" />
+		</div>
+	</form>
+</body>
+</html>
