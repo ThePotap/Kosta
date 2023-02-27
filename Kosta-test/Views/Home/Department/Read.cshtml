@@ -1,0 +1,40 @@
+﻿@model Kosta_test.Models.Department
+@{
+	Layout = "_Layout";
+}
+@section Scripts{
+		<script src="~/js/site.js"></script>
+}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Read department</title>
+</head>
+<body>
+	<form method="post" name="form">
+		<input type="hidden" name="depParentID" value="@ViewData["ParentDepartmentID"]" />
+		<input type="hidden" name="depID" value="@Model.ID" />
+		<div class="department-card">
+			<table>
+				<tr>
+					<td><label>Родительское подразделение</label></td>
+					<td><label>@ViewData["ParentDepartmentName"]</label></td>
+				</tr>
+				<tr>
+					<td><label>Мнемокод</label></td>
+					<td><input type="text" name="Code" value="@Model.Code" readonly/></td>
+				</tr>
+				<tr>
+					<td><label>Наименование</label></td>
+					<td><input type="text" name="Name" value="@Model.Name" readonly/></td>
+				</tr>
+			</table>
+			<br>
+			<input type="submit" name="action" value="Редактировать" formaction="/Home/UpdateDepartment" />			
+		</div>
+	</form>
+	<form method="get">
+		<input type="submit" name="action" value="Назад" formaction="/Home/Index" />
+	</form>
+</body>
+</html>

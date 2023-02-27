@@ -39,7 +39,9 @@ namespace Kosta_test.App_Code
             var result = $"<li>{node.Name} </li>" +
                 $"<form method=\"post\">" +
                     $"<input type=\"submit\" value=\"Сотрудники\" formaction=\"/Home/ShowEmployees\"/>" +
-                    $"<input type=\"hidden\" name=\"depID\" value=\"{node.ID}\"/>" +
+                    $"<input type=\"submit\" value=\"Подробнее\" formaction=\"/Home/ReadDepartment\"/>" +
+					$"<input type=\"submit\" value=\"Удалить\" onclick=\"return ConfirmDeletingDepartment()\" formaction=\"/Home/DeleteDepartment\"/>" +
+					$"<input type=\"hidden\" name=\"depID\" value=\"{node.ID}\"/>" +
                 $"</form>" +
                 $"<br>";
             if (node.Children.Count == 0)

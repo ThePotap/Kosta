@@ -15,6 +15,7 @@ namespace Kosta_test.Controllers
             db = context;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             return View(db.Department.ToList());
@@ -156,8 +157,141 @@ namespace Kosta_test.Controllers
 
 			return ShowEmployees(selectedDepID);
 		}
-    
-		private bool DepartmentIDCorrect(string depID)
+
+        [HttpGet]
+        public IActionResult CreateDepartment()
+        {
+            var departments = db.Department.ToList();
+            var department = new Department();
+            var departmentCardModel = new DepartmentCardModel
+            {
+                Department = department,
+                Departments = departments
+            };
+            return View("Department/Create", departmentCardModel);
+        }
+
+        [HttpPost]
+        public IActionResult ReadDepartment(string depID)
+        {
+            if (!DepartmentIDCorrect(depID))
+            {
+				return BadRequest("Incorrect request");
+			}
+			
+			var department = db.Department.Where(item => item.ID == Guid.Parse(depID)).FirstOrDefault();
+			
+            var departmentParent = db.Department.Where(item => item.ID == department.ParentDepartmentID).FirstOrDefault();
+            if(departmentParent == null)
+            {
+                ViewData["ParentDepartmentID"] = string.Empty;
+				ViewData["ParentDepartmentName"] = string.Empty;
+			}
+            else
+            {
+                ViewData["ParentDepartmentID"] = departmentParent.ID.ToString();
+				ViewData["ParentDepartmentName"] = departmentParent.Name;
+			}
+            
+			return View("Department/Read", department);
+		}
+
+		[HttpPost]
+        public IActionResult UpdateDepartment(string depID, string depParentID)
+        {
+            if(!DepartmentIDCorrect(depID) || !DepartmentIDNullOrExist(depParentID))
+            {
+				return BadRequest("Incorrect request");
+			}
+
+            ViewData["ParentDepartmentID"] = depParentID;
+			var departments = db.Department.ToList();
+			var department = db.Department.Where(item => item.ID == Guid.Parse(depID)).FirstOrDefault();
+			var departmentCardModel = new DepartmentCardModel
+			{
+				Department = department,
+				Departments = departments
+			};
+			return View("Department/Update", departmentCardModel);
+		}
+
+        [HttpPost]
+        public IActionResult DeleteDepartment(string depID)
+        {
+			if (!DepartmentIDCorrect(depID))
+			{
+				return BadRequest("Incorrect request");
+			}
+
+            //проверяем есть ли в данном отделе дочерние отделы или пользователи, если есть - удалять нельзя
+            var hasEmployees = db.Employee.Where(item => item.DepartmentID == Guid.Parse(depID)).Count() > 0;
+            var hasChildDepartments = db.Department.Where(item => item.ParentDepartmentID == Guid.Parse(depID)).Count() > 0;
+
+            if(!hasEmployees && !hasChildDepartments)
+            {
+                var department = db.Department.Where(item => item.ID == Guid.Parse(depID)).FirstOrDefault();
+                if (department != null)
+                {
+                    db.Department.Remove(department);
+                    db.SaveChanges();
+                }
+            }
+
+            return RedirectToAction("Index");
+		}
+
+		[HttpGet]
+        public IActionResult SaveNewDepartment(string selectedDepID, Department department)
+        {
+            if (!DepartmentIDNullOrExist(selectedDepID))
+            {
+				return BadRequest("Incorrect request");
+			}
+
+            if(string.IsNullOrEmpty(selectedDepID))
+            {
+				department.ParentDepartmentID = null;
+			}
+            else
+            {
+                department.ParentDepartmentID = Guid.Parse(selectedDepID);
+            }
+
+            db.Department.Add(department);
+            db.SaveChanges();
+
+            return View("Index", db.Department.ToList());
+        }
+
+        [HttpGet]
+        public IActionResult SaveExistDepartment(string selectedDepID, Department department)
+        {
+			if (!DepartmentIDNullOrExist(selectedDepID) || !DepartmentIDCorrect(department.ID.ToString()))
+			{
+				return BadRequest("Incorrect request");
+			}
+
+			if (string.IsNullOrEmpty(selectedDepID))
+			{
+				department.ParentDepartmentID = null;
+			}
+			else
+			{
+				department.ParentDepartmentID = Guid.Parse(selectedDepID);
+			}
+
+            var dep = db.Department.Where(item => item.ID == department.ID).FirstOrDefault();
+            dep.ParentDepartmentID = department.ParentDepartmentID;
+            dep.Code = department.Code;
+            dep.Name = department.Name;
+
+			db.Department.Update(dep);
+			db.SaveChanges();
+
+			return View("Index", db.Department.ToList());
+		}
+
+        private bool DepartmentIDCorrect(string depID)
         {
 			if (string.IsNullOrEmpty(depID))
 			{
@@ -199,6 +333,28 @@ namespace Kosta_test.Controllers
             }
 
             return true;
+		}
+
+        private bool DepartmentIDNullOrExist(string depID)
+        {
+            if(string.IsNullOrEmpty(depID))
+            {
+                return true;
+            }
+
+			Guid departmentID;
+			if (!Guid.TryParse(depID, out departmentID))
+			{
+				return false;
+			}
+
+			var department = db.Department.Where(item => item.ID == departmentID).FirstOrDefault();
+			if (department == null)
+			{
+				return false;
+			}
+
+			return true;
 		}
     }
 }

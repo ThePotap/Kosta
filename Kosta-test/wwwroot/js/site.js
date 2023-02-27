@@ -1,5 +1,20 @@
-﻿//заполнение первоначальных данных
-function SetInitialInfo() {
+﻿
+
+//заполнение первоначальных данных подразделения
+function SetInitialInfoDepartmentCard() {
+    //выбор из списка отделов того к которому относится подразделение
+    let parentDepartment = document.getElementById("selectedDep");
+    let departmentList = document.getElementById("departmentList");
+    for (let i = 0; i < departmentList.length; i++) {
+        if (departmentList[i].value === parentDepartment.value) {
+            departmentList.selectedIndex = i;
+            break;
+        }
+    }
+}
+
+//заполнение первоначальных данных сотрудника
+function SetInitialInfoEmployeeCard() {
     //выбор из списка отделов того к которому относится сотрудник
     let parentDepartment = document.getElementById("selectedDep");
     let departmentList = document.getElementById("departmentList");
@@ -79,7 +94,7 @@ function ValidateEmployee() {
     }
 
     let postition = document.form.Position.value;
-    if (postition == "") {
+    if (postition === "") {
         alert("Поле \"Должность\" обязательно для заполнения!");
         document.form.Position.focus();
         return false;
@@ -93,13 +108,40 @@ function ValidateEmployee() {
     return true;
 }
 
+function ValidateDepartment() {
+    let code = document.form.Code.value;
+    if (code != "" && code.length > 10) {
+        alert("Поле \"Мнемокод\" должно быть не более 10 символов");
+        document.forms.Code.focus();
+        return false;
+    }
 
-function ConfirmDeleting(employeeID) {
+    let name = document.form.Name.value;
+    if (name === "") {
+        alert("Поле \"Наименование\" обязательно для заполнения");
+        document.forms.Name.focus();
+        return false;
+    }
+    if (name != "" && name.length > 50) {
+        alert("Поле \"Наименование\" должно быть не более 50 символов");
+        document.forms.Name.focus();
+        return false;
+    }
+
+    return true;
+}
+
+function ConfirmDeletingEmployee(employeeID) {
     if (!confirm("Вы действительно хотите удалить сотрудника?")) {
         return false;
     }
     ChangeSelectedEmployee(employeeID);
     return true;
+}
+
+
+function ConfirmDeletingDepartment() {
+    return confirm("Вы действительно хотите удалить отдел? (Отделы в которых есть дочерние отделы или сотрудники не будут удалены)")
 }
 
 

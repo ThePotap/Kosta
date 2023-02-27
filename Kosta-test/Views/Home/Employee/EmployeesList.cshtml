@@ -31,7 +31,7 @@
 					<td>@employee.Position</td>
 					<td>
 						<input type="submit" value="Подробнее" onclick="ChangeSelectedEmployee(@employee.ID)" formaction="/Home/ReadEmployee" />
-						<input type="submit" value="Удалить" onclick="return ConfirmDeleting(@employee.ID)" formaction="/Home/DeleteEmployee" />
+						<input type="submit" value="Удалить" onclick="return ConfirmDeletingEmployee(@employee.ID)" formaction="/Home/DeleteEmployee" />
 					</td>
 				</tr>
 			}

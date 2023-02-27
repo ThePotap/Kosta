@@ -1,0 +1,47 @@
+﻿@model Kosta_test.ViewModels.DepartmentCardModel
+@{
+	Layout = "_Layout";
+}
+@section Scripts{
+	<script src="~/js/site.js"></script>
+}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Create department</title>
+</head>
+<body>
+	<form method="get" name="form">		
+		<input id="selectedDep" type="hidden" name="selectedDepID" />
+		<div class="department-card">
+			<table>
+				<tr>
+					<td><label>Родительское подразделение</label></td>
+					<td>
+						<select id="departmentList" onchange="ChangeSelectedDepartment(this)">
+							<option selected value=""></option>
+							@foreach (var dep in Model.Departments)
+							{
+								<option value="@dep.ID">@dep.Name</option>
+							}
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td><label>Мнемокод</label></td>
+					<td><input type="text" name="Code" value="@Model.Department.Code" /></td>
+				</tr>
+				<tr>
+					<td><label>Наименование*</label></td>
+					<td><input type="text" name="Name" value="@Model.Department.Name" /></td>
+				</tr>				
+			</table>
+			<br>
+			<input type="submit" name="action" value="Сохранить" onclick="return ValidateDepartment()" formaction="/Home/SaveNewDepartment" />
+			<input type="submit" name="action" value="Назад" formaction="/Home/Index" />
+			<br>
+			<p>* - Поля обязательные для заполнения</p>
+		</div>
+	</form>	
+</body>
+</html>

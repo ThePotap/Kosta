@@ -10,7 +10,7 @@
 <head>
 	<title>Create employee</title>
 </head>
-<body onload="SetInitialInfo()">
+<body onload="SetInitialInfoEmployeeCard()">
 	<form method="post" name="form">
 		<input type="hidden" name="depID" value="@ViewData["DepartmentID"]" />
 		<input type="hidden" name="ID" value="@Model.Employee.ID" />
@@ -19,7 +19,7 @@
 			<table>
 				<tr>
 					<td>
-						<label>Отдел</label>						
+						<label>Отдел*</label>						
 					</td>
 					<td>
 						<select id="departmentList" onchange="ChangeSelectedDepartment(this)">
@@ -31,11 +31,11 @@
 					</td>
 				</tr>
 				<tr>
-					<td><label>Фамилия</label></td>
+					<td><label>Фамилия*</label></td>
 					<td><input type="text" name="SurName" value="@Model.Employee.SurName" /></td>
 				</tr>
 				<tr>
-					<td><label>Имя</label></td>
+					<td><label>Имя*</label></td>
 					<td><input type="text" name="FirstName" value="@Model.Employee.FirstName" /></td>
 				</tr>
 				<tr>
@@ -43,7 +43,7 @@
 					<td><input type="text" name="Patronymic" value="@Model.Employee.Patronymic" /></td>
 				</tr>
 				<tr>
-					<td><label>Дата рождения</label></td>
+					<td><label>Дата рождения*</label></td>
 					<td><input id="dateOfBirth" type="date" name="DateOfBirth" value="@Model.Employee.DateOfBirth" onchange="ChangeAge()" /></td>
 				</tr>
 				<tr>
@@ -59,13 +59,15 @@
 					<td><input type="text" name="DocNumber" value="@Model.Employee.DocNumber" /></td>
 				</tr>
 				<tr>
-					<td><label>Должность</label></td>
+					<td><label>Должность*</label></td>
 					<td><input type="text" name="Position" value="@Model.Employee.Position" /></td>
 				</tr>
 			</table>
 			<br>
 			<input type="submit" name="action" value="Сохранить" onclick="return ValidateEmployee()" formaction="/Home/SaveExistEmployee" />
 			<input type="submit" name="action" value="Назад" formaction="/Home/ShowEmployees" />
+			<br>
+			<p>* - Поля обязательные для заполнения</p>
 		</div>
 	</form>
 </body>
