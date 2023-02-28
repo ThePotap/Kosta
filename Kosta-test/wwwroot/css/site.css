@@ -1,9 +1,14 @@
 .structure li {
-    font-size: 20px;
+    font-size: 28px;
+    font-weight: bold;
 }
 
-.structure button{
-    font-size: 12px;
+.structure input{
+    font-size: 14px;
+}
+
+input {
+    font-size: 20px;
 }
 
 table, tr, td {
@@ -12,5 +17,9 @@ table, tr, td {
 }
 
 .employee-card input, label, select{
+    font-size: 20px;
+}
+
+.department-card input, label, select {
     font-size: 20px;
 }

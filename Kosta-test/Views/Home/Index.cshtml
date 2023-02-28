@@ -11,10 +11,10 @@
 <body>
     <h1>Структура компании</h1>        
     <div class="structure">
-        @Html.CreateTree(Model)
-        <form method="get">
-            <input type="submit" value="Добавить отдел" formaction="/Home/CreateDepartment"/>
-        </form>
+        @Html.CreateTree(Model)        
     </div>
+    <form method="get">
+        <input type="submit" value="Добавить отдел" formaction="/Home/CreateDepartment" />
+    </form>
 </body>
 </html>
